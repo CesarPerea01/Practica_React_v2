@@ -14,11 +14,10 @@ import {
 import { DeleteIcon, EditIcon } from './Icons';
 import { useAppSelector} from '../hooks/store';
 import { useUsersActions } from '../hooks/useUsersActions';
-
   
   export function LisOfUsers() {
     const users = useAppSelector((state) => state.users);
-    const { removeUser } = useUsersActions();
+    const { removeUser, updateUser, handleFormState } = useUsersActions();
 
     return (
       <>
@@ -26,6 +25,7 @@ import { useUsersActions } from '../hooks/useUsersActions';
           <button
             type="button"
             className="mt-4 w-full whitespace-nowrap rounded-tremor-small bg-tremor-brand px-4 py-2.5 text-tremor-default font-medium text-tremor-brand-inverted shadow-tremor-input hover:bg-tremor-brand-emphasis dark:bg-dark-tremor-brand dark:text-dark-tremor-brand-inverted dark:shadow-dark-tremor-input dark:hover:bg-dark-tremor-brand-emphasis sm:mt-0 sm:w-fit"
+            onClick={() => handleFormState()}
           >
             Agregar Usuario
           </button>
@@ -62,7 +62,9 @@ import { useUsersActions } from '../hooks/useUsersActions';
                 <TableCell>{item.email}</TableCell>
                 <TableCell>{item.github}</TableCell>
                 <TableCell>
-                  <button type='button' style={{marginRight:'20px'}}>
+                  <button type='button' 
+                    style={{marginRight:'20px'}}
+                    onClick={() => updateUser({id: item.id, name: item.name, email: item.email, github: item.github})}>
                     <EditIcon/>
                   </button>
                   <button type='button'

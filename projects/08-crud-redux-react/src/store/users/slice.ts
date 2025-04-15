@@ -80,10 +80,17 @@ export const usersSlice = createSlice({
             if (!isUserAlreadyDefined) {
                 state.push(action.payload)
             }
+        },
+        updateUserById: (state, action: PayloadAction<UserWithId>) => {
+            const userToUpdate = action.payload
+            const userIndex = state.findIndex((user) => user.id === userToUpdate.id)
+            if (userIndex !== -1) {
+                state[userIndex] = userToUpdate
+            }
         }
     },
 })
 
 export default usersSlice.reducer
 
-export const { deleteUserById, addNewUser, rollbackUser } = usersSlice.actions
+export const { deleteUserById, addNewUser, rollbackUser, updateUserById } = usersSlice.actions
