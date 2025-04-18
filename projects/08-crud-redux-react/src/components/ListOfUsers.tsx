@@ -17,11 +17,14 @@ import { useAppSelector} from '../hooks/store';
 import { useUsersActions } from '../hooks/useUsersActions';
 import { CreateNewUser } from './CreateNewUser';
 import { useFormContext } from '../context/formContext';
+import { useState } from 'react';
+import { UserWithId } from '../store/users/slice';
   
   export function LisOfUsers() {
     const users = useAppSelector((state) => state.users);
-    const { removeUser, updateUser} = useUsersActions();
+    const { removeUser} = useUsersActions();
     const {formState, setFormState} = useFormContext()
+    const [userToEdit, setUserToEdit] = useState<UserWithId | null>(null)
 
     return (
       <>
@@ -69,7 +72,7 @@ import { useFormContext } from '../context/formContext';
                 <TableCell>
                   <button type='button' 
                     style={{marginRight:'20px'}}
-                    onClick={() => updateUser({id: item.id, name: item.name, email: item.email, github: item.github})}>
+                    onClick={() => {setUserToEdit(item); setFormState(true);}}>
                     <EditIcon/>
                   </button>
                   <button type='button'
@@ -82,7 +85,7 @@ import { useFormContext } from '../context/formContext';
           </TableBody>
         </Table>
     </Card>
-    {formState && <CreateNewUser/>}
+    {formState && <CreateNewUser userToEdit={userToEdit} />}
   </>
   );
 }

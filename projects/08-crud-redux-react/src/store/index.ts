@@ -56,6 +56,29 @@ const syncWithDatabaseMiddleware:Middleware = (store:any) => (next:any) => (acti
             console.log(error)
         })
     }
+
+    if (type === 'users/updateUserById'){
+        const userToUpdate= payload
+
+        fetch(`https://jsonplaceholder.typicode.com/users/${userToUpdate.id}`, {
+            method: 'PUT',
+            body: JSON.stringify(userToUpdate),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                toast.success(`usuario ${userToUpdate.name} actualizado`)
+            }
+        })
+        .catch(error => {
+            toast.error(`Error al actualizar el usuario ${userToUpdate.name}`)
+            // Rollback the state to the previous state
+            store.dispatch(rollbackUser(userToUpdate))
+            console.log(error)
+        })
+    }
 }
 
 export const store = configureStore({
