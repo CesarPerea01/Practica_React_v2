@@ -33,6 +33,29 @@ const syncWithDatabaseMiddleware:Middleware = (store:any) => (next:any) => (acti
             console.log(error)
         })
     }
+
+    if (type === 'users/addNewUser'){
+        const userToAdd = payload
+        console.log(JSON.stringify(userToAdd))
+        fetch(`https://jsonplaceholder.typicode.com/users`, {
+            method: 'POST',
+            body: JSON.stringify(userToAdd),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                toast.success(`usuario ${userToAdd.name} creado`)
+            }
+        })
+        .catch(error => {
+            toast.error(`Error al crear el usuario ${userToAdd.name}`)
+            // Rollback the state to the previous state
+            store.dispatch(rollbackUser(userToAdd))
+            console.log(error)
+        })
+    }
 }
 
 export const store = configureStore({

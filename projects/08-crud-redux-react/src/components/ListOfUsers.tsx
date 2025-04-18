@@ -8,27 +8,32 @@ import {
   TableRow,
   Title,
   Badge,
-  Card
+  Card,
+  Button
 } from '@tremor/react';
 
 import { DeleteIcon, EditIcon } from './Icons';
 import { useAppSelector} from '../hooks/store';
 import { useUsersActions } from '../hooks/useUsersActions';
+import { CreateNewUser } from './CreateNewUser';
+import { useFormContext } from '../context/formContext';
   
   export function LisOfUsers() {
     const users = useAppSelector((state) => state.users);
-    const { removeUser, updateUser, handleFormState } = useUsersActions();
+    const { removeUser, updateUser} = useUsersActions();
+    const {formState, setFormState} = useFormContext()
 
     return (
       <>
         <div  className="sm:flex sm:items-center sm:justify-between sm:space-x-10">
-          <button
+          <Button
             type="button"
-            className="mt-4 w-full whitespace-nowrap rounded-tremor-small bg-tremor-brand px-4 py-2.5 text-tremor-default font-medium text-tremor-brand-inverted shadow-tremor-input hover:bg-tremor-brand-emphasis dark:bg-dark-tremor-brand dark:text-dark-tremor-brand-inverted dark:shadow-dark-tremor-input dark:hover:bg-dark-tremor-brand-emphasis sm:mt-0 sm:w-fit"
-            onClick={() => handleFormState()}
+            disabled={formState}
+            className="bg-blue-500 text-white hover:bg-blue-600"
+            onClick={() => setFormState(!formState)}
           >
             Agregar Usuario
-          </button>
+          </Button>
         </div>
         <Card className="mt-6 w-full max-w-4xl">
         <Title style={{alignItems:'left'}}>
@@ -77,6 +82,7 @@ import { useUsersActions } from '../hooks/useUsersActions';
           </TableBody>
         </Table>
     </Card>
+    {formState && <CreateNewUser/>}
   </>
   );
 }
