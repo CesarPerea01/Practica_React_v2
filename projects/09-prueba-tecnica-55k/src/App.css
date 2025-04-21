@@ -1,0 +1,11 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+  width: 100%;
+}
+
+tbody :hover {
+  background-color: rgba(76, 200, 241, 0.644);
+}
